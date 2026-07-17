@@ -1,0 +1,412 @@
+/* =====================================================
+   PELINDO PORTAL INVENTORY - MODERN CORPORATE THEME
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --pelindo-primary: #005CB9;
+    --pelindo-secondary: #0077B6;
+    --pelindo-dark: #0A3054;
+    --pelindo-light: #F4F7FC;
+    --sidebar-bg: #0A2E50;
+    --sidebar-active: rgba(255, 255, 255, 0.12);
+    --sidebar-hover: rgba(255, 255, 255, 0.06);
+    --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    --border-radius: 12px;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--pelindo-light);
+    color: #333333;
+    overflow-x: hidden;
+}
+
+/* SIDEBAR LAYOUT */
+.sidebar-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: white;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-logo {
+    padding: 16px 20px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logo-wrapper {
+    background-color: transparent;
+    border-radius: 8px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.sidebar-logo img {
+    max-height: 38px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.sidebar-user {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-user-email {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: 500;
+    word-break: break-all;
+    text-align: center;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 20px 14px;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 12px 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    margin-bottom: 6px;
+}
+
+.sidebar-nav a i {
+    font-size: 1.15rem;
+}
+
+.sidebar-nav a:hover {
+    background-color: var(--sidebar-hover);
+    color: #ffffff;
+}
+
+.sidebar-nav a.active {
+    background-color: var(--sidebar-active);
+    color: #ffffff;
+    font-weight: 600;
+    border-left: 4px solid #38bdf8;
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-footer .btn-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar-footer .btn-logout:hover {
+    background-color: #dc2626;
+}
+
+/* CONTENT AREA */
+.main-content {
+    margin-left: 260px;
+    flex-grow: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-navbar {
+    background-color: #ffffff;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.top-navbar-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--pelindo-dark);
+    margin: 0;
+}
+
+.content-body {
+    padding: 30px;
+    flex-grow: 1;
+}
+
+/* CARDS & CONTENT UI */
+.modern-card {
+    background-color: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--card-shadow);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.modern-card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #edf2f7;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modern-card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--pelindo-dark);
+    margin: 0;
+}
+
+.modern-card-body {
+    padding: 24px;
+}
+
+/* MODERN TABLES */
+.modern-table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.modern-table th {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    padding: 14px 18px;
+    border-bottom: 2px solid #e2e8f0;
+    border-top: none;
+}
+
+.modern-table td {
+    padding: 14px 18px;
+    vertical-align: middle;
+    color: #334155;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.modern-table tr:last-child td {
+    border-bottom: none;
+}
+
+.modern-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+/* BUTTONS */
+.btn-modern-primary {
+    background-color: var(--pelindo-primary);
+    color: #ffffff;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 18px;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-primary:hover {
+    background-color: var(--pelindo-secondary);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 92, 185, 0.2);
+}
+
+.btn-modern-light {
+    background-color: #ffffff;
+    color: var(--pelindo-primary);
+    border: 1px solid var(--pelindo-primary);
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 18px;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-light:hover {
+    background-color: rgba(0, 92, 185, 0.05);
+    color: var(--pelindo-primary);
+}
+
+.btn-modern-danger {
+    background-color: #ef4444;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 18px;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-modern-danger:hover {
+    background-color: #dc2626;
+    color: white;
+}
+
+/* FORM ELEMENTS */
+.form-label {
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--pelindo-primary);
+    box-shadow: 0 0 0 3px rgba(0, 92, 185, 0.15);
+}
+
+/* BADGES */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.badge-status-selesai {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.badge-status-berlangsung {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+/* LOGIN LAYOUT */
+.login-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.login-left {
+    flex: 1.2;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 50px;
+    color: white;
+}
+
+.login-left::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(10, 48, 84, 0.9) 0%, rgba(0, 92, 185, 0.75) 100%);
+    z-index: 1;
+}
+
+.login-left-content {
+    position: relative;
+    z-index: 2;
+}
+
+.login-right {
+    flex: 0.8;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.login-logo img {
+    height: 45px;
+}
+
+.login-logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--pelindo-dark);
+}
