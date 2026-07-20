@@ -19,6 +19,7 @@ if (isset($_POST['update'])) {
     $serial = mysqli_real_escape_string($conn, $_POST['serial_number']);
 
     mysqli_query($conn, "UPDATE inventaris SET ip_address='$ip', user='$user', jenis_barang='$jenis', sub_jenis_barang='$sub', harga_per_unit='$harga', serial_number='$serial' WHERE ip_address='$ip_awal'");
+    $_SESSION['success_message'] = "Data inventaris berhasil di update.";
     header("Location: index.php");
     exit;
 }
@@ -88,7 +89,8 @@ if (!$data) {
                     <h5 class="modern-card-title"><i class="bi bi-pencil-square me-2"></i>Edit Data Aset</h5>
                 </div>
                 <div class="modern-card-body">
-                    <form method="POST">
+                    <form method="POST" id="editForm">
+                        <input type="hidden" name="update" value="1">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">IP Address</label>
@@ -117,7 +119,7 @@ if (!$data) {
                         </div>
                         
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" name="update" class="btn btn-warning fw-semibold px-4 py-2 border-0" style="border-radius: 8px;">
+                            <button type="button" onclick="confirmUpdate()" class="btn btn-warning fw-semibold px-4 py-2 border-0" style="border-radius: 8px;">
                                 <i class="bi bi-check-circle me-1"></i> Update Data
                             </button>
                             <a href="index.php" class="btn btn-modern-light">Batal</a>
@@ -130,5 +132,30 @@ if (!$data) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function confirmUpdate() {
+    const form = document.getElementById('editForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    Swal.fire({
+        title: 'Konfirmasi Update',
+        text: 'Apakah yakin mengupdate data ini?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#f59e0b',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Update!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
+</script>
 </body>
 </html>

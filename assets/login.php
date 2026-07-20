@@ -124,5 +124,18 @@ function showPassword(){
 }
 </script>
 
+<?php if (isset($_SESSION['error_login'])): ?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Login Gagal',
+        text: '<?= $_SESSION['error_login'] ?>',
+        confirmButtonColor: '#005cb9'
+    });
+</script>
+<?php unset($_SESSION['error_login']); ?>
+<?php endif; ?>
+
 </body>
 </html>

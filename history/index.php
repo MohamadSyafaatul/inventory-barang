@@ -74,7 +74,7 @@ $data = mysqli_query($conn, "
 
         <div class="sidebar-nav">
             <a href="../assets/dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-            <a href="../inventaris/index.php"><i class="bi bi-pc-display"></i> Inventaris</a>
+            <a href="../inventaris/index.php"><i class="bi bi-pc-display"></i> Inventory</a>
             <a href="../maintenance/index.php"><i class="bi bi-tools"></i> Maintenance</a>
             <a href="index.php" class="active"><i class="bi bi-clock-history"></i> History</a>
         </div>

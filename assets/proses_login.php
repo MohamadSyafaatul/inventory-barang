@@ -19,15 +19,8 @@ if(mysqli_num_rows($query)>0){
     header("Location: dashboard.php");
 
 }else{
-
-    echo "<script>
-
-    alert('Username atau Password Salah');
-
-    window.location='login.php';
-
-    </script>";
-
+    $_SESSION['error_login'] = "Username atau password yang Anda masukkan salah.";
+    header("Location: login.php");
+    exit;
 }
-
 ?>
