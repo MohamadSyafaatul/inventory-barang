@@ -63,6 +63,56 @@ $ips = mysqli_query($conn, "SELECT ip_address FROM inventaris ORDER BY ip_addres
         .checklist-item.checked .checklist-label {
             color: #198754;
         }
+        /* Validation Modal */
+        .modal-validation .modal-header {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            border-bottom: none;
+        }
+        .modal-validation .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+        .modal-validation .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal-validation .modal-body {
+            padding: 1.5rem 1.75rem;
+        }
+        .modal-validation .modal-footer {
+            border-top: 1px solid #f1f5f9;
+            padding: 1rem 1.75rem;
+            border-radius: 0 0 12px 12px;
+        }
+        .validation-list li {
+            padding: 6px 0;
+            color: #374151;
+            font-size: 0.92rem;
+        }
+        .validation-list li i {
+            color: #ef4444;
+        }
+        .field-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+        }
+        .required-badge {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-left: 2px;
+        }
+        .optional-badge {
+            font-size: 0.75rem;
+            background: #e0f2fe;
+            color: #0284c7;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 500;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
     </style>
 </head>
 
@@ -111,11 +161,35 @@ $ips = mysqli_query($conn, "SELECT ip_address FROM inventaris ORDER BY ip_addres
                     <h5 class="modern-card-title"><i class="bi bi-file-earmark-plus me-2"></i>Tambah Laporan Perawatan</h5>
                 </div>
                 <div class="modern-card-body">
-                    <form method="POST" action="tambah_checklist.php" id="maintenanceForm">
+                    <!-- Modal Validasi -->
+                    <div class="modal fade modal-validation" id="validationModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        Kolom Wajib Belum Diisi
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="text-muted mb-3" style="font-size:0.9rem;">Harap lengkapi kolom berikut sebelum menyimpan data:</p>
+                                    <ul class="validation-list list-unstyled" id="validationErrors"></ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-modern-primary" data-bs-dismiss="modal">
+                                        <i class="bi bi-pencil me-1"></i> Lengkapi Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="tambah_checklist.php" id="maintenanceForm" novalidate>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label">IP Address</label>
-                                <select name="ip_address" id="ip_address" class="form-select" required>
+                                <label class="form-label">IP Address <span class="required-badge">*</span></label>
+                                <select name="ip_address" id="ip_address" class="form-select">
                                     <option value="">-- Pilih IP Address Perangkat --</option>
                                     <?php while($d = mysqli_fetch_assoc($ips)) { ?>
                                         <option value="<?= htmlspecialchars($d['ip_address']) ?>"><?= htmlspecialchars($d['ip_address']) ?></option>
@@ -135,23 +209,23 @@ $ips = mysqli_query($conn, "SELECT ip_address FROM inventaris ORDER BY ip_addres
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Pelaksana Perawatan</label>
-                                <input type="text" name="pelaksana_perawatan" class="form-control" placeholder="Contoh: Admin IT, Bidang Teknik" required>
+                                <label class="form-label">Pelaksana Perawatan <span class="required-badge">*</span></label>
+                                <input type="text" name="pelaksana_perawatan" id="pelaksana_perawatan" class="form-control" placeholder="Contoh: Admin IT, Bidang Teknik">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Teknisi Lapangan</label>
-                                <input type="text" name="teknisi" class="form-control" placeholder="Nama teknisi penanggung jawab" required>
+                                <label class="form-label">Teknisi Lapangan <span class="required-badge">*</span></label>
+                                <input type="text" name="teknisi" id="teknisi" class="form-control" placeholder="Nama teknisi penanggung jawab">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Tipe Perawatan</label>
-                                <input type="text" name="tipe_perawatan" class="form-control" placeholder="Contoh: Preventive, Corrective" required>
+                                <label class="form-label">Tipe Perawatan <span class="required-badge">*</span></label>
+                                <input type="text" name="tipe_perawatan" id="tipe_perawatan" class="form-control" placeholder="Contoh: Preventive, Corrective">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label">Periode Perawatan</label>
-                                <input type="text" name="periode_perawatan" class="form-control" placeholder="Contoh: Bulanan, 3 Bulan, 6 Bulan, Tahunan" required>
+                                <label class="form-label">Periode Perawatan <span class="required-badge">*</span></label>
+                                <input type="text" name="periode_perawatan" id="periode_perawatan" class="form-control" placeholder="Contoh: Bulanan, 3 Bulan, 6 Bulan, Tahunan">
                             </div>
 
                             <!-- Data referensi (ditampilkan, tidak disimpan) -->
@@ -170,15 +244,15 @@ $ips = mysqli_query($conn, "SELECT ip_address FROM inventaris ORDER BY ip_addres
 
                             <!-- Data maintenance (disimpan) -->
                             <div class="col-md-12">
-                                <label class="form-label">Deskripsi Permasalahan</label>
-                                <textarea name="permasalahan" class="form-control" rows="3" placeholder="Jelaskan kendala atau status perangkat saat ini..." required></textarea>
+                                <label class="form-label">Deskripsi Permasalahan <span class="required-badge">*</span></label>
+                                <textarea name="permasalahan" id="permasalahan" class="form-control" rows="3" placeholder="Jelaskan kendala atau status perangkat saat ini..."></textarea>
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label">Tindakan / Aksi yang Dilakukan</label>
-                                <textarea name="aksi" class="form-control" rows="3" placeholder="Langkah penanganan yang diambil..." required></textarea>
+                                <label class="form-label">Tindakan / Aksi yang Dilakukan <span class="required-badge">*</span></label>
+                                <textarea name="aksi" id="aksi" class="form-control" rows="3" placeholder="Langkah penanganan yang diambil..."></textarea>
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label">Keterangan Tambahan (Opsional)</label>
+                                <label class="form-label">Keterangan Tambahan <span class="optional-badge">Opsional</span></label>
                                 <textarea name="keterangan" class="form-control" rows="2" placeholder="Catatan tambahan bila ada..."></textarea>
                             </div>
 
@@ -207,7 +281,7 @@ $ips = mysqli_query($conn, "SELECT ip_address FROM inventaris ORDER BY ip_addres
                         </div>
 
                         <div class="mt-4 d-flex gap-2 border-top pt-4">
-                            <button type="submit" class="btn btn-modern-primary py-2.5 px-4">
+                            <button type="button" onclick="validateMaintenanceForm()" class="btn btn-modern-primary py-2.5 px-4">
                                 <i class="bi bi-floppy me-1.5"></i> Simpan Laporan
                             </button>
                             <a href="index.php" class="btn btn-modern-light py-2.5 px-4">Batal</a>
@@ -263,6 +337,60 @@ $ips = mysqli_query($conn, "SELECT ip_address FROM inventaris ORDER BY ip_addres
             icon.className = 'bi bi-circle';
         }
     }
+
+    // Konfigurasi field wajib maintenance
+    const requiredFieldsMaintenance = [
+        { id: 'ip_address',          label: 'IP Address Perangkat',       type: 'select' },
+        { id: 'pelaksana_perawatan', label: 'Pelaksana Perawatan',         type: 'input' },
+        { id: 'teknisi',             label: 'Teknisi Lapangan',            type: 'input' },
+        { id: 'tipe_perawatan',      label: 'Tipe Perawatan',              type: 'input' },
+        { id: 'periode_perawatan',   label: 'Periode Perawatan',           type: 'input' },
+        { id: 'permasalahan',        label: 'Deskripsi Permasalahan',      type: 'textarea' },
+        { id: 'aksi',                label: 'Tindakan / Aksi yang Dilakukan', type: 'textarea' },
+    ];
+
+    function validateMaintenanceForm() {
+        const errors = [];
+
+        // Reset highlight error
+        requiredFieldsMaintenance.forEach(f => {
+            document.getElementById(f.id).classList.remove('field-error');
+        });
+
+        // Cek setiap field wajib
+        requiredFieldsMaintenance.forEach(f => {
+            const el = document.getElementById(f.id);
+            if (!el.value.trim()) {
+                errors.push(f.label);
+                el.classList.add('field-error');
+            }
+        });
+
+        if (errors.length > 0) {
+            const ul = document.getElementById('validationErrors');
+            ul.innerHTML = '';
+            errors.forEach(label => {
+                ul.innerHTML += `<li><i class="bi bi-x-circle-fill me-2"></i>${label}</li>`;
+            });
+            const modal = new bootstrap.Modal(document.getElementById('validationModal'));
+            modal.show();
+
+            // Scroll ke field pertama yang error
+            const firstErrorId = requiredFieldsMaintenance.find(f => errors.includes(f.label)).id;
+            document.getElementById(firstErrorId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            document.getElementById('maintenanceForm').submit();
+        }
+    }
+
+    // Hapus highlight error saat user mulai mengisi
+    requiredFieldsMaintenance.forEach(f => {
+        const el = document.getElementById(f.id);
+        const eventType = f.type === 'select' ? 'change' : 'input';
+        el.addEventListener(eventType, function() {
+            this.classList.remove('field-error');
+        });
+    });
 </script>
 
 </body>

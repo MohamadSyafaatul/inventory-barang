@@ -32,6 +32,58 @@ if (isset($_POST['simpan'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <style>
+        /* Validation Modal */
+        .modal-validation .modal-header {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border-radius: 12px 12px 0 0;
+            border-bottom: none;
+        }
+        .modal-validation .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+        .modal-validation .modal-content {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal-validation .modal-body {
+            padding: 1.5rem 1.75rem;
+        }
+        .modal-validation .modal-footer {
+            border-top: 1px solid #f1f5f9;
+            padding: 1rem 1.75rem;
+            border-radius: 0 0 12px 12px;
+        }
+        .validation-list li {
+            padding: 6px 0;
+            color: #374151;
+            font-size: 0.92rem;
+        }
+        .validation-list li i {
+            color: #ef4444;
+        }
+        .field-error {
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+        }
+        .optional-badge {
+            font-size: 0.75rem;
+            background: #e0f2fe;
+            color: #0284c7;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 500;
+            vertical-align: middle;
+            margin-left: 6px;
+        }
+        .required-badge {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-left: 2px;
+        }
+    </style>
 </head>
 
 <body>
@@ -79,36 +131,60 @@ if (isset($_POST['simpan'])) {
                     <h5 class="modern-card-title"><i class="bi bi-plus-circle-fill me-2"></i>Tambah Aset Baru</h5>
                 </div>
                 <div class="modern-card-body">
-                    <form method="POST">
+                    <!-- Modal Validasi -->
+                    <div class="modal fade modal-validation" id="validationModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                        Kolom Wajib Belum Diisi
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p class="text-muted mb-3" style="font-size:0.9rem;">Harap lengkapi kolom berikut sebelum menyimpan data:</p>
+                                    <ul class="validation-list list-unstyled" id="validationErrors"></ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-modern-primary" data-bs-dismiss="modal">
+                                        <i class="bi bi-pencil me-1"></i> Lengkapi Data
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="POST" id="formInventaris" novalidate>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">IP Address</label>
-                                <input type="text" name="ip_address" class="form-control" placeholder="Contoh: 192.168.1.10" required>
+                                <label class="form-label">IP Address <span class="required-badge">*</span></label>
+                                <input type="text" name="ip_address" id="ip_address" class="form-control" placeholder="Contoh: 192.168.1.10">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">User / Pemilik</label>
-                                <input type="text" name="user" class="form-control" placeholder="Nama penanggung jawab" required>
+                                <label class="form-label">User / Pemilik <span class="required-badge">*</span></label>
+                                <input type="text" name="user" id="user" class="form-control" placeholder="Nama penanggung jawab">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Jenis Barang</label>
-                                <input type="text" name="jenis_barang" class="form-control" placeholder="Contoh: Laptop, Printer, PC" required>
+                                <label class="form-label">Jenis Barang <span class="required-badge">*</span></label>
+                                <input type="text" name="jenis_barang" id="jenis_barang" class="form-control" placeholder="Contoh: Laptop, Printer, PC">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Sub Jenis Barang</label>
-                                <input type="text" name="sub_jenis_barang" class="form-control" placeholder="Contoh: Thinkpad T480, Epson L3210" required>
+                                <label class="form-label">Sub Jenis Barang <span class="required-badge">*</span></label>
+                                <input type="text" name="sub_jenis_barang" id="sub_jenis_barang" class="form-control" placeholder="Contoh: Thinkpad T480, Epson L3210">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Harga Per Unit (Rp)</label>
-                                <input type="number" name="harga_per_unit" class="form-control" placeholder="Contoh: 12000000" required>
+                                <label class="form-label">Harga Per Unit (Rp) <span class="optional-badge">Opsional</span></label>
+                                <input type="number" name="harga_per_unit" id="harga_per_unit" class="form-control" placeholder="Contoh: 12000000">
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label">Serial Number</label>
-                                <input type="text" name="serial_number" class="form-control" placeholder="Contoh: SN-12345ABC" required>
+                                <label class="form-label">Serial Number <span class="required-badge">*</span></label>
+                                <input type="text" name="serial_number" id="serial_number" class="form-control" placeholder="Contoh: SN-12345ABC">
                             </div>
                         </div>
                         
                         <div class="mt-4 d-flex gap-2">
-                            <button type="submit" name="simpan" class="btn btn-modern-primary">
+                            <button type="button" onclick="validateForm()" class="btn btn-modern-primary">
                                 <i class="bi bi-floppy me-1"></i> Simpan
                             </button>
                             <a href="index.php" class="btn btn-modern-light">Batal</a>
@@ -121,5 +197,58 @@ if (isset($_POST['simpan'])) {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Konfigurasi field wajib: { id, label }
+    const requiredFields = [
+        { id: 'ip_address',      label: 'IP Address' },
+        { id: 'user',            label: 'User / Pemilik' },
+        { id: 'jenis_barang',    label: 'Jenis Barang' },
+        { id: 'sub_jenis_barang',label: 'Sub Jenis Barang' },
+        { id: 'serial_number',   label: 'Serial Number' },
+    ];
+
+    function validateForm() {
+        const errors = [];
+
+        // Reset semua highlight error
+        requiredFields.forEach(f => {
+            document.getElementById(f.id).classList.remove('field-error');
+        });
+
+        // Cek setiap field wajib
+        requiredFields.forEach(f => {
+            const el = document.getElementById(f.id);
+            if (!el.value.trim()) {
+                errors.push(f.label);
+                el.classList.add('field-error');
+            }
+        });
+
+        if (errors.length > 0) {
+            // Tampilkan modal dengan daftar kolom kosong
+            const ul = document.getElementById('validationErrors');
+            ul.innerHTML = '';
+            errors.forEach(label => {
+                ul.innerHTML += `<li><i class="bi bi-x-circle-fill me-2"></i>${label}</li>`;
+            });
+            const modal = new bootstrap.Modal(document.getElementById('validationModal'));
+            modal.show();
+
+            // Scroll ke field pertama yang error
+            const firstErrorId = requiredFields.find(f => errors.includes(f.label)).id;
+            document.getElementById(firstErrorId).scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            // Semua valid, submit form
+            document.getElementById('formInventaris').submit();
+        }
+    }
+
+    // Hapus highlight error saat user mulai mengetik
+    requiredFields.forEach(f => {
+        document.getElementById(f.id).addEventListener('input', function() {
+            this.classList.remove('field-error');
+        });
+    });
+</script>
 </body>
 </html>
